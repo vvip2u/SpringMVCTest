@@ -7,11 +7,12 @@ package com.jkyec.controller;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.jkyec.dao.users.UserDao;
 import com.jkyec.model.User;
+import com.jkyec.service.UserService;
 
 /**
  * 
@@ -24,17 +25,27 @@ import com.jkyec.model.User;
 @RequestMapping("/users")
 public class UserController {
 	
-	@Resource(name="userDao")
-	private UserDao userDao;
+	@Resource(name="userService")
+	private UserService userService;
 	
-	@RequestMapping(method=RequestMethod.GET)
-	public String view() {
+	@RequestMapping(value="/get/{userId}",method=RequestMethod.GET)
+	public String view(@PathVariable Integer userId) {
+		System.out.println("UserController.view()");
+		User user = new User();
+		user.setUserId(userId);
+		user.setUserName("new User");
+		userService.addUser(user);
+		return "users";
+	}
+	
+	@RequestMapping(value="/cats",method=RequestMethod.GET)
+	public String view2() {
 		System.out.println("UserController.view()");
 //		User user = new User();
 //		user.setUserId(100);
 //		user.setUserName("new User");
 //		userDao.addUser(user);
-		return "users.jsp";
+		return "cats";
 	}
 	
 }
